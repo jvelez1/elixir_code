@@ -1,6 +1,7 @@
 defmodule Cards do
 
   # check this out https://hexdocs.pm/elixir/Kernel.html
+  # run console iex -S mix
 
   def create_deck do
     values =  ['ACE', 'TWO', 'THREE', 'FOUR', 'FIVE']
@@ -32,6 +33,22 @@ defmodule Cards do
   def save(deck, file_name) do
     binary = :erlang.term_to_binary(deck) #Usign erlang programming language
     File.write(file_name, binary)
+  end
+
+  def load(file_name) do
+    # Easy way.... #
+
+    # {status, binary} = File.read(file_name)
+    # case status do
+    #   :ok -> :erlang.binary_to_term(binary)
+    #   :error -> "Something is not working"
+    # end
+
+    # nice way, with pattern matching
+    case File.read(file_name) do
+      { :ok, binary } -> :erlang.binary_to_term(binary)
+      { :error, _reason } -> "Something is not working" # use '_' when is not used. if you delete the variable 'reason', pattern matching won't work
+    end
   end
 
 end
